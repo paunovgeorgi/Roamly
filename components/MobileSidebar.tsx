@@ -4,6 +4,11 @@ import { Link } from "react-router"
 import NavItems from "./NavItems"
 
 const MobileSidebar = () => {
+
+    const toggleSidebar = () => {
+        sidebar.toggle();
+    }
+
     let sidebar: SidebarComponent
 
   return (
@@ -18,7 +23,7 @@ const MobileSidebar = () => {
 
                     <h1>Tourvisto</h1>
                 </Link>
-                <button onClick={() => {sidebar.toggle()}}>
+                <button onClick={toggleSidebar}>
                     <img src="/assets/icons/menu.svg" alt="menu" className="size-7 cursor-pointer" />
                 </button>
             </header>
@@ -31,7 +36,7 @@ const MobileSidebar = () => {
                 showBackdrop={true}
                 type="over"
             >
-                <NavItems />
+                <NavItems handleCLick={toggleSidebar} />
             </SidebarComponent>
     </div>
   )
