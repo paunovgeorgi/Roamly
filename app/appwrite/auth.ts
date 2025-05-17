@@ -181,7 +181,7 @@ export const loginWithGoogle = async () => {
   try {
     account.createOAuth2Session(
       OAuthProvider.Google,
-      `${window.location.origin}/`,
+      `${window.location.origin}/callback`,
       `${window.location.origin}/404`
     );
   } catch (error) {
@@ -217,3 +217,21 @@ export const getUser = async () => {
     return null;
   }
 };
+
+
+export const getAllUsers = async (limit: number, offset: number) => {
+  try {
+    const { documents: users, total} = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.limit(limit), Query.offset(offset)]
+    );
+
+    if(total === 0) return {users: [], total};
+
+    return {users, total};
+  } catch (error) {
+    console.log('Error fetching users', error);
+    return {users: [], total: 0};
+  }
+}
