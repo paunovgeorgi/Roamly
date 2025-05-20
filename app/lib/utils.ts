@@ -37,7 +37,7 @@ export function parseTripData(jsonString: string): Trip | null {
   }
 }
 
-export function getFirstWord(input: string = ""): string {
+export function getFirstWord(input: string): string {
   return input.trim().split(/\s+/)[0] || "";
 }
 
