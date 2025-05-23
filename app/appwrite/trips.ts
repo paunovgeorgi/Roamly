@@ -19,6 +19,20 @@ export const getAllTrips = async (limit: number, offset: number) => {
     };
 }
 
+export const getTripsNumberByUserId = async (userId: string) => {
+    try {
+        const result = await database.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.tripCollectionId,
+            [Query.equal('userId', userId)]
+        );
+        return result.total;
+    } catch (error) {
+        console.error('Error fetching trips by userId:', error);
+        return 0;
+    }
+}
+
 export const getTripById = async (tripId: string) => {
     const trip = await database.getDocument(
         appwriteConfig.databaseId,

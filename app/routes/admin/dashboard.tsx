@@ -2,7 +2,7 @@ import { Header, StatsCard, TripCard } from "components"
 import { getAllUsers, getUser } from "~/appwrite/auth";
 import type { Route } from './+types/dashboard';
 import { getTripsByTravelStyle, getUserGrowthPerDay, getUsersAndTripsStats } from "~/appwrite/dashboard";
-import { getAllTrips } from "~/appwrite/trips";
+import { getAllTrips, getTripsNumberByUserId } from "~/appwrite/trips";
 import { parseTripData } from "~/lib/utils";
 import { Category, ChartComponent, ColumnSeries, DataLabel, Inject, SeriesCollectionDirective, SeriesDirective, SplineAreaSeries, Tooltip } from "@syncfusion/ej2-react-charts";
 import { tripXAxis, tripyAxis, userXAxis, useryAxis } from "~/constants";
@@ -25,13 +25,24 @@ import { ColumnDirective, ColumnsDirective, GridComponent } from "@syncfusion/ej
           imageUrls: imageUrls ?? [],
         }));
 
-    const mappedUsers: UsersItineraryCount[] = allUsers.users.map((user) => (
-      {
-        imageUrl: user.imageUrl,
-        name: user.name,
-        count: user.itineraryCount ?? Math.floor(Math.random() * 10)
-      }
-    ));
+    // const mappedUsers: UsersItineraryCount[] = allUsers.users.map((user) => (
+    //   {
+    //     imageUrl: user.imageUrl,
+    //     name: user.name,
+    //     count: user.itineraryCount ?? Math.floor(Math.random() * 10)
+    //   }
+    // ));
+
+    
+  const mappedUsers: UsersItineraryCount[] = await Promise.all(
+  allUsers.users.map(async (user) => ({
+    imageUrl: user.imageUrl,
+    name: user.name,
+    count: await getTripsNumberByUserId(user.accountId)
+  }))
+);
+    
+    
 
     return {
       user,
@@ -48,7 +59,11 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
   const user = loaderData.user as User | null;
   const {dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers} = loaderData;
 
-  console.log(tripsByTravelStyle);
+
+      console.log('THE USERS' + allUsers[0]);
+
+
+  // console.log(tripsByTravelStyle);
 
   const trips = allTrips.map((trip) => (
     {
