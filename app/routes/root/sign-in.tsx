@@ -23,7 +23,7 @@ const SignIn = () => {
                     <Link to={'/'}>
                         <img src='/assets/icons/logo.svg' alt='loto' className='size-[30px]'/>
                     </Link>
-                    <h1 className='p-28-bold'>Tourvisto</h1>
+                    <h1 className='p-28-bold'>Roamly</h1>
                 </header>
                 <article>
                     <h2 className='p-28-semibold text-dark-100 text-center'>Start Your Travel Journey</h2>

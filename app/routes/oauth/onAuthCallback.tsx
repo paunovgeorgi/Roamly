@@ -24,7 +24,9 @@ const OAuthCallback = () => {
     init();
   }, [navigate]);
 
-  return <p>Logging you in...</p>;
+  return <div className='flex w-full h-full justify-center items-center'>
+      <p>Logging you in...</p>
+  </div>;
 };
 
 export default OAuthCallback;
