@@ -132,33 +132,62 @@ export const getExistingUser = async (id: string) => {
   }
 };
 
+// export const storeUserData = async () => {
+//   try {
+//     const user = await account.get();
+//     if (!user) throw new Error("User not found");
+
+//     const { providerAccessToken } = (await account.getSession("current")) || {};
+//     const profilePicture = providerAccessToken
+//       ? await getGooglePicture(providerAccessToken)
+//       : null;
+
+//     const createdUser = await database.createDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.userCollectionId,
+//       ID.unique(),
+//       {
+//         accountId: user.$id,
+//         email: user.email,
+//         name: user.name,
+//         imageUrl: profilePicture,
+//         joinedAt: new Date().toISOString(),
+//       }
+//     );
+
+//     if (!createdUser.$id) redirect("/sign-in");
+//   } catch (error) {
+//     console.error("Error storing user data:", error);
+//   }
+// };
+
 export const storeUserData = async () => {
-  try {
-    const user = await account.get();
-    if (!user) throw new Error("User not found");
+    try {
+        const user = await account.get();
+        if (!user) throw new Error("User not found");
 
-    const { providerAccessToken } = (await account.getSession("current")) || {};
-    const profilePicture = providerAccessToken
-      ? await getGooglePicture(providerAccessToken)
-      : null;
+        const { providerAccessToken } = (await account.getSession("current")) || {};
+        const profilePicture = providerAccessToken
+            ? await getGooglePicture(providerAccessToken)
+            : null;
 
-    const createdUser = await database.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
-      ID.unique(),
-      {
-        accountId: user.$id,
-        email: user.email,
-        name: user.name,
-        imageUrl: profilePicture,
-        joinedAt: new Date().toISOString(),
-      }
-    );
+        const createdUser = await database.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            ID.unique(),
+            {
+                accountId: user.$id,
+                email: user.email,
+                name: user.name,
+                imageUrl: profilePicture,
+                joinedAt: new Date().toISOString(),
+            }
+        );
 
-    if (!createdUser.$id) redirect("/sign-in");
-  } catch (error) {
-    console.error("Error storing user data:", error);
-  }
+        if (!createdUser.$id) redirect("/sign-in");
+    } catch (error) {
+        console.error("Error storing user data:", error);
+    }
 };
 
 const getGooglePicture = async (accessToken: string) => {

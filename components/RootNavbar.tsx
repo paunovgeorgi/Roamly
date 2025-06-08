@@ -6,7 +6,7 @@ const RootNavbar = () => {
     const navigate = useNavigate();
     const location = useLocation()
     const params = useParams();
-    const user = useLoaderData();
+    const user = useLoaderData() || 'Guest';
 
     const handleLogout = async () => {
         await logoutUser();
@@ -27,16 +27,22 @@ const RootNavbar = () => {
                             Admin Panel
                         </Link>
                     )}
-
+                    {user !== 'Guest' &&
                     <img src={user?.imageUrl || '/assets/images/david.wepb'} alt="user" referrerPolicy="no-referrer" />
-
-                    <button onClick={handleLogout} className="cursor-pointer">
+                    }
+                    
+                    {user === 'Guest' ? (  <Link to="/sign-in" className={cn('text-base font-normal text-white', {"text-dark-100": location.pathname.startsWith('/travel')})}>
+                            Sign In
+                        </Link>) : (
+                            <button onClick={handleLogout} className="cursor-pointer">
                         <img
                             src="/assets/icons/logout.svg"
                             alt="logout"
                             className="size-6 rotate-180"
                         />
                     </button>
+                        )}
+                    
                 </aside>
             </header>
         </nav>

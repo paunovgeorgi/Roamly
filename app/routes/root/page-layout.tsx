@@ -5,17 +5,34 @@ import { getExistingUser, logoutUser, storeUserData } from '~/appwrite/auth';
 import { account } from '~/appwrite/client';
 
 
-  export async function clientLoader() {
+//   export async function clientLoader() {
+//     try {
+//         const user = await account.get();
+
+//         if(!user.$id) return redirect('/sign-in');
+
+//         const existingUser = await getExistingUser(user.$id);
+//         return existingUser?.$id ? existingUser : await storeUserData();
+//     } catch (e) {
+//         console.log('Error fetching user', e)
+//         return redirect('/sign-in')
+//     }
+// }
+
+export async function clientLoader() {
     try {
         const user = await account.get();
+        
+        // If no user is authenticated, return null instead of redirecting
+        if(!user.$id) return 'Guest';
 
-        if(!user.$id) return redirect('/sign-in');
-
+        // If user is authenticated, get/create their data
         const existingUser = await getExistingUser(user.$id);
         return existingUser?.$id ? existingUser : await storeUserData();
     } catch (e) {
-        console.log('Error fetching user', e)
-        return redirect('/sign-in')
+        console.log('Error fetching user', e);
+        // Return null instead of redirecting on error
+        return null;
     }
 }
 
